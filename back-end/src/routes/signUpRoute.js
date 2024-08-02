@@ -11,7 +11,7 @@ export const signUpRoute = {
     const user = await db.collection("users").findOne({ email });
     if (user) res.sendStatus(409);
 
-    const passwordHash = bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
     const startingInfo = {
       hairColor: "",
       favouriteFood: "",
@@ -24,6 +24,7 @@ export const signUpRoute = {
       info: startingInfo,
       isVerified: false,
     });
+    console.log("---- signup result ----", result);
     const { insertedId } = result;
     console.log("----insertedId ----", insertedId);
     jwt.sign(

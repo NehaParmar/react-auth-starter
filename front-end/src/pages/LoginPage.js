@@ -1,31 +1,44 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { useToken } from "../auth/useToken";
+
 export const LogInPage = () => {
+  const [token, setToken] = useToken();
   const [errorMessage, setErrorMessage] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
 
   const history = useHistory();
 
-  const onLoginClicked = async () => {};
+  const onLoginClicked = async () => {
+    const response = await axios.post("/api/login", {
+      email: emailValue,
+      password: passwordValue,
+    });
+
+    const { token } = response.data;
+    setToken(token);
+    history.push("/");
+  };
 
   return (
     <div className="content-container">
       <h1>Log In</h1>
       {errorMessage && <div className="fail">{errorMessage}</div>}
       <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={emailValue}
+        onChange={(e) => setEmailValue(e.target.value)}
         placeholder="someone@gmail.com"
       />
       <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        value={passwordValue}
+        onChange={(e) => setPasswordValue(e.target.value)}
         placeholder="password"
         type="password"
       />
       <hr />
-      <button disabled={!email || !password} onClick={onLoginClicked}>
+      <button disabled={!emailValue || !passwordValue} onClick={onLoginClicked}>
         Log In
       </button>
       <button onClick={() => history.push("/forgot-password")}>

@@ -3,7 +3,9 @@ import { signUpRoute } from "./signUpRoute";
 import { logInRoute } from "./loginRoute";
 import { updteUserInfo } from "./updateUserInfo";
 import { verifyEmailRoute } from "./verifyEmailRoute";
-// import { testEmailRoute } from "./testEmailRoute";
+import { forgotPasswordRoute } from "./forgotPasswordRoute";
+import { testEmailRoute } from "./testEmailRoute";
+import { resetPasswordRoute } from "./resetPasswordRoute";
 
 export const routes = [
   testRoute,
@@ -11,5 +13,7 @@ export const routes = [
   logInRoute,
   updteUserInfo,
   verifyEmailRoute,
+  forgotPasswordRoute,
+  resetPasswordRoute,
 ];
 // testEmailRoute,

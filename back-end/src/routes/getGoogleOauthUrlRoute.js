@@ -5,6 +5,7 @@ export const getGoogleOauthUrlRoute = {
   method: "get",
   handler: (req, res) => {
     const url = getGoogleOauthUrl();
+    console.log("url----", url);
     res.status(200).json({ url });
   },
 };

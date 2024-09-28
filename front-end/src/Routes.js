@@ -7,6 +7,7 @@ import { PrivateRoute } from "./auth/PrivateRoute";
 import { PleaseVerifyEmailPage } from "./pages/PleaseVerifyEmailPage";
 import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { PasswordResetLandingPage } from "./pages/PasswordResetLandingPage";
+import { EmailVerificationCodePage } from "./pages/EmailVerificationCodePage";
 
 export const Routes = () => {
   return (
@@ -15,10 +16,18 @@ export const Routes = () => {
         <PrivateRoute path="/" exact>
           <UserInfoPage />
         </PrivateRoute>
+        <Route path="/verify-email" exact>
+          <EmailVerificationCodePage />
+        </Route>
         <Route path="/verify-email/:verificationString">
           <EmailVerificationLandingPage />
         </Route>
-        <Route path="/reset-password/:passwordResetCode">
+        // ---- Uncomment while not using awz cognito login method -----//
+        {/* <Route path="/reset-password/:passwordResetCode">
+          <PasswordResetLandingPage />
+        </Route> */}
+        // ---- Uncomment while not using awz cognito login method -----//
+        <Route path="/reset-password">
           <PasswordResetLandingPage />
         </Route>
         <Route path="/forgot-password">

@@ -12,7 +12,10 @@ export const ForgotPasswordPage = () => {
     await axios.put(`/api/forgot-password/${emailValue}`);
     setSuccess(true);
     setTimeout(() => {
-      history.push("/login");
+      // ----- uncomment while not using aws cognito login ------ //
+      // history.push("/login");
+      // ----- uncomment while not using aws cognito login ------ //
+      history.push(`/reset-password?email=${encodeURIComponent(emailValue)}`);
     }, 3000);
   };
 

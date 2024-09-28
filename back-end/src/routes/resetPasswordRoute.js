@@ -1,28 +1,24 @@
-import bcrypt from "bcrypt";
-import { getDbConnection } from "../db";
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { awsUserPool } from "../util/awsUserPool";
 
 export const resetPasswordRoute = {
   path: "/api/users/:passwordResetCode/reset-password",
   method: "put",
   handler: async (req, res) => {
     const { passwordResetCode } = req.params;
-    const { newPassword } = req.body;
-    console.log("passwordResetCode -", passwordResetCode);
+    const { email, newPassword } = req.body;
 
-    const db = getDbConnection("react-auth-db");
-
-    const newPasswordHash = await bcrypt.hash(newPassword, 10);
-
-    const result = await db.collection("users").findOneAndUpdate(
-      { passwordResetCode },
+    new CognitoUser({ Username: email, Pool: awsUserPool }).confirmPassword(
+      passwordResetCode,
+      newPassword,
       {
-        $set: { passwordHash: newPasswordHash },
-        $unset: { passwordResetCode: "" },
+        onSuccess: () => {
+          res.sendStatus(200);
+        },
+        onFailure: () => {
+          res.sendStatus(401);
+        },
       }
     );
-    console.log("result ---", result);
-    if (result.lastErrorObject.n === 0) return res.sendStatus(404);
-
-    res.sendStatus(200);
   },
 };

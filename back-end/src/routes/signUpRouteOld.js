@@ -13,7 +13,10 @@ export const signUpRoute = {
     const user = await db.collection("users").findOne({ email });
     if (user) res.sendStatus(409);
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    const salt = uuid();
+    const pepper = process.env.PEPPER_STRING;
+
+    const passwordHash = await bcrypt.hash(salt + password + pepper, 10);
     const verificationString = uuid();
     const startingInfo = {
       hairColor: "",
@@ -24,6 +27,7 @@ export const signUpRoute = {
     const result = await db.collection("users").insertOne({
       email,
       passwordHash,
+      salt,
       info: startingInfo,
       isVerified: false,
       verificationString,
